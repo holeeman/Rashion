@@ -29,33 +29,33 @@ mysql -u <username> -p
 
 inside the mysql command line, run following command to make sns database
 
-'''
+```
 CREATE DATABASE sns;
-'''
+```
 
 Then you want to use that database to create a necessary table
 
-'''
+```
 USE sns;
-'''
+```
 
 Now you want to create a table called photos. This is where information of photos are going to be stored.
 
-'''
+```
 CREATE TABLE `photos` (`id` int(11) NOT NULL, `path` varchar(260) NOT NULL, `rating` int(11) NOT NULL, `voted` int(11) NOT NULL);
-'''
+```
 
 Make 'id' column of the photos primary key
 
-'''
+```
 ALTER TABLE `photos` ADD PRIMARY KEY (`id`);
-'''
+```
 
 Make 'id' column to auto increment
 
-'''
+```
 ALTER TABLE `photos` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
-'''
+```
 
 Now you can exit the mysql command line by
 
@@ -69,7 +69,7 @@ go to the project folder, and open the server.js file.
 
 you will see the folowing code:
 
-'''
+```
 // you need to put your database info!
 var con = mysql.createConnection({
   host: "localhost",
@@ -77,7 +77,7 @@ var con = mysql.createConnection({
   password: "",
   database: "sns"
 });
-'''
+```
 
 set user: "" to your username.
 set password: "" to your password.
@@ -86,6 +86,6 @@ You are all set!
 
 Now run following command on terminal or cmd to run the server.
 
-'''
+```
 node server.js
-'''
+```
