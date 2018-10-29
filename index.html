@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <meta charset="utf-8" />
+    <title>Upload Your Photo</title>
+    </head>
+    <body>
+        <div class="mnavbar">
+          <a href="/">Home</a>
+          <a href="/rankdisp">Rank</a>
+           <a href="/vote">Vote</a>
+          <a href="/">Upload</a>
+        </div>
+        <div class="main">
+            <div style="margin-left:auto; margin-right:auto; width: 70%;  margin-top:25px;"><img src="http://178.128.0.183:8080/img?img=logo.png" style="width:100%;"/></div>
+            <h1>Upload Your Photo!</h1>
+            <div class="imageview"><img id="preview"/></div>
+            <div style="margin-left: auto; margin-right:auto; width: 90%;">
+                <form id="frmUploader" enctype="multipart/form-data" action="http://178.128.0.183:8080/api/Upload/" method="post">
+                <input type="file" name="upimg" class="btn btn-default" onchange="putImage();" style="display:inline-block; width:65%;"/>
+                <input type="submit" name="submit" id="btnSubmit" class="btn btn-primary" value="Upload" style="display:inline-block; width:30%;"/> </form>
+            </div>
+        </div>
+        <script>
+            function showImage(src, target) 
+            {
+                var fr = new FileReader();
+                fr.onload = function()
+                {
+                    target.src = fr.result;
+                }
+                fr.readAsDataURL(src.files[0]);
+            }
+
+            function putImage() 
+            {
+                //alert("test");
+                var src = document.getElementsByName("upimg")[0];
+                var target = document.getElementById("preview");
+                showImage(src, target);
+            }
+    
+        </script>
+    </body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="utf-8" />
+    <title>Vote!</title>
+    </head>
+    <body>
+        <div class="mnavbar">
+          <a href="/">Home</a>
+          <a href="/rankdisp">Rank</a>
+          <a href="/vote">Vote</a>
+          <a href="/">Upload</a>
+        </div>
+        <div class="main">
+            <h1>Vote for whom you like better!</h1>
+            <div class="fimage" onclick="vote(0);"></div>
+            <div class="fimage" onclick="vote(1);"></div>
+        </div>
+        <script>
+            var p1id = -1;
+            var p2id = -1;
+            var newc = 2;
+            function httpGetAsync(theUrl, callback)
+            {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function() { 
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                        callback(xmlHttp.responseText);
+                }
+                xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+                xmlHttp.send(null);
+            }
+            function cb(text)
+            {
+                //console.log(text);
+                var myObj = JSON.parse(text);
+                var img = document.createElement("img");
+                var img2 = document.createElement("img");
+                img.src = myObj.first.photo;
+                img2.src = myObj.second.photo;
+                document.getElementsByClassName("fimage")[0].appendChild(img);
+                document.getElementsByClassName("fimage")[1].appendChild(img2);
+                p1id = myObj.first.id;
+                p2id = myObj.second.id;
+            }
+            
+            function vote(num)
+            {
+                if(p1id != -1 && p2id != -1)
+                {
+                    if(num == 0)
+                    {
+                            httpGetAsync("http://178.128.0.183:8080/api/Vote?id="+p1id+"&score="+1, vcb);
+                            httpGetAsync("http://178.128.0.183:8080/api/Vote?id="+p2id, vcb);
+                    }
+                    else if(num == 1)
+                    {
+                            httpGetAsync("http://178.128.0.183:8080/api/Vote?id="+p1id, vcb);
+                            httpGetAsync("http://178.128.0.183:8080/api/Vote?id="+p2id+"&score="+1, vcb);
+                    }
+                }
+                
+            }
+            
+            function vcb(text)
+            {
+                //console.log(text);
+                console.log(text);
+                newc -= 1;
+                if(newc == 0)
+                {
+                    console.log("getting new pair!");
+                    var p1 = document.getElementsByClassName("fimage")[0];
+                    var p2 = document.getElementsByClassName("fimage")[1];
+                    p1.removeChild(p1.childNodes[0]);
+                    p2.removeChild(p2.childNodes[0]);
+                    newc = 2;
+                    httpGetAsync("http://178.128.0.183:8080/api/GetPair", cb);
+                }
+                
+            }
+            
+            httpGetAsync("http://178.128.0.183:8080/api/GetPair", cb);
+        </script>
+    </body>
+</html>
